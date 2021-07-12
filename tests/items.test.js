@@ -25,3 +25,13 @@ describe("POST /items", () => {
     expect(result.status).toEqual(201);
   });
 });
+
+describe("GET /items", () => {
+  it("return status 200 and the expect rows in list", async () => {
+    await connection.query(`INSERT INTO list (text) VALUES ('testeperfeito')`);
+    const result = await connection.query(`SELECT * FROM list`);
+    const test = await supertest(app).get("/items");
+    expect(test.status).toEqual(200);
+    expect(test.body).toEqual(result.rows);
+  });
+});

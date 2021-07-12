@@ -9,8 +9,7 @@ app.use(cors());
 
 app.post("/items", async (req, res) => {
   try {
-    console.log(req.body);
-    if (req.body.text?.length === 0) {
+    if (req.body.text?.trim().length === 0) {
       res.sendStatus(400);
     } else {
       await connection.query(`INSERT INTO list (text) VALUES ($1)`, [
@@ -21,6 +20,16 @@ app.post("/items", async (req, res) => {
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
+  }
+});
+
+app.get("/items", async (req, res) => {
+  try {
+    const request = await connection.query(`SELECT * FROM list`);
+    res.send(request.rows);
+  } catch (e) {
+    console.log(e);
+    res.sendStatus;
   }
 });
 
