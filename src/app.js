@@ -9,10 +9,15 @@ app.use(cors());
 
 app.post("/items", async (req, res) => {
   try {
+    console.log(req.body);
     if (req.body.text?.length === 0) {
       res.sendStatus(400);
+    } else {
+      await connection.query(`INSERT INTO list (text) VALUES ($1)`, [
+        req.body.text,
+      ]);
+      res.sendStatus(201);
     }
-    await connection(`INSERT INTO list (text) VALUES ($1)`, [req.body.text]);
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
